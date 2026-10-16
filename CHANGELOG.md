@@ -2,6 +2,14 @@
 
 All notable changes to this repository are listed here. Format follows Keep a Changelog; versions follow Semantic Versioning.
 
+## [1.1.0] - 2026-10-16
+
+### Changed
+- Trackd is now a standalone item, and its tools (Mini, Forger, Document Editor, MS Assist, FileSearchPro) are separate items with their own clips. The combined toolbox reel is removed.
+- Trackd is tagged Non-AI. All references to recording are removed from the page and the footage.
+- Contact section shows "Personal Email" and "Professional Email" buttons instead of the addresses. LinkedIn is removed. GitHub links to this repository.
+- Reading list added: Attention Is All You Need, Agentic Large Language Models, Introduction to AI Safety, Ethics and Society.
+
 ## [1.0.0] - 2026-10-16
 
 ### Added

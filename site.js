@@ -1,12 +1,12 @@
 /* Portfolio behaviour: scene crossfade, video sync, AI / Non-AI filter. No dependencies. */
 (function () {
-  var AI = { 1: true, 2: true, 4: true }; // Lucy, SympliLyfe, Trackd are AI-backed
+  var AI = { 1: true, 2: true }; // Lucy and SympliLyfe are AI-backed
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var layersEl = document.getElementById('layers');
   var layers = layersEl ? Array.prototype.slice.call(layersEl.children) : [];
-  var layerIndex = [0, 9, 1, 2, 3, 4, 5, 6, 7, 8]; // DOM order of the background layers
+  var layerIndex = [0, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // DOM order of the background layers
   var sections = [];
-  for (var i = 0; i <= 9; i++) { var el = document.getElementById('ch' + i); if (el) sections[i] = el; }
+  for (var i = 0; i <= 13; i++) { var el = document.getElementById('ch' + i); if (el) sections[i] = el; }
   var active = 0, filter = 'all';
 
   function setLayers() {
@@ -35,14 +35,14 @@
   var raf = 0;
   function pick() {
     raf = 0; var best = 0, bn = -1, cur = visible(active);
-    for (var n = 0; n <= 9; n++) { var v = visible(n); if (v > best) { best = v; bn = n; } }
+    for (var n = 0; n <= 13; n++) { var v = visible(n); if (v > best) { best = v; bn = n; } }
     if (bn >= 0 && bn !== active && best > cur + 24) { active = bn; setLayers(); }
   }
   function onScroll() { if (!raf) raf = requestAnimationFrame(pick); }
 
   function setFilter(key) {
     filter = key;
-    for (var n = 1; n <= 7; n++) {
+    for (var n = 1; n <= 11; n++) {
       var show = key === 'all' || (key === 'ai' ? !!AI[n] : !AI[n]);
       if (sections[n]) sections[n].style.display = show ? '' : 'none';
       var a = document.querySelector('.dots a[href="#ch' + n + '"]'); if (a) a.style.display = show ? '' : 'none';
@@ -53,7 +53,7 @@
       b.style.background = on ? '#0F1B2D' : 'rgba(255,255,255,0.85)';
       b.style.color = on ? '#FFFFFF' : '#0F1B2D';
     });
-    var first = null; for (var m = 1; m <= 7; m++) if (sections[m] && sections[m].style.display !== 'none') { first = sections[m]; break; }
+    var first = null; for (var m = 1; m <= 11; m++) if (sections[m] && sections[m].style.display !== 'none') { first = sections[m]; break; }
     var start = document.querySelector('a[href^="#ch"][style*="background: rgb(15, 27, 45)"]');
     if (start && first) start.setAttribute('href', '#' + first.id);
     if (active !== 0 && first) first.scrollIntoView({ block: 'start' });

@@ -34,7 +34,8 @@ Then open http://localhost:8000.
 
 - All footage uses invented sample data.
 - Some videos show applications that are not published here. Only the three demos under `demos/` are runnable from this repository.
-- Chapter tags: AI-backed are chapters 1, 2 and 4. The rest are Non-AI. The list is the first line of `site.js`.
+- Chapter tags: Lucy and SympliLyfe are AI-backed. Everything else is Non-AI. The list is the first line of `site.js`.
+- Trackd is shown as its own item, followed by five of its tools as separate items: Mini, Forger, Document Editor, MS Assist and FileSearchPro.
 
 ## Updating the page
 
