@@ -2,6 +2,13 @@
 
 All notable changes to this repository are listed here. Format follows Keep a Changelog; versions follow Semantic Versioning.
 
+## [1.2.1] - 2026-10-16
+
+### Changed
+- Responsive layout. On wide screens the card sits at the left edge and the demo fills the space beside it, so there is no empty gutter on the left. The demo scales to the window height and width.
+- On narrow windows (under 1000 px wide) and on phones, the demo is pinned above the card and the card scrolls up over it. Sizes follow the window, so quarter-screen, maximised, tablet and phone all fit without horizontal scrolling.
+- Training-deck slide stack scales with the window instead of using fixed pixel sizes.
+
 ## [1.2.0] - 2026-10-16
 
 ### Changed
