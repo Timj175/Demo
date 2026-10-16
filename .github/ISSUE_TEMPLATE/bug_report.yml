@@ -1,0 +1,25 @@
+name: Bug report
+description: Something on the site or a demo is broken
+labels: [bug]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: Where did it happen?
+      description: Page, chapter or demo name.
+      placeholder: "Chapter 3, Atlas prototype"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and operating system
+      placeholder: "Edge 130 on Windows 11"
+    validations:
+      required: true

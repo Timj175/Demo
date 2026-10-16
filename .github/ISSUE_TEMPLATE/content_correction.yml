@@ -1,0 +1,16 @@
+name: Content correction
+description: A typo, wrong fact or broken link in the page text
+labels: [content]
+body:
+  - type: textarea
+    id: quote
+    attributes:
+      label: The text or link that is wrong
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: What it should say
+    validations:
+      required: false

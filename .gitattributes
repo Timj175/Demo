@@ -1,0 +1,21 @@
+# Normalize line endings so Windows (CRLF) and GitHub (LF) agree.
+* text=auto
+
+# Text files stored as LF
+*.html text eol=lf
+*.js   text eol=lf
+*.css  text eol=lf
+*.md   text eol=lf
+*.yml  text eol=lf
+*.json text eol=lf
+
+# Binary files: never touch or diff as text
+*.mp4  binary
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.pdf  binary
+*.webp binary
+
+# Keep the large single-file prototype out of language statistics
+demos/atlas/index.html linguist-vendored

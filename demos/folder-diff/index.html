@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Folder Reader + Diff</title>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="topbar">
+<div class="brand">
+<div class="dot"></div>
+<div>
+<div class="title">Folder Reader</div>
+<div class="subtitle">Load 1–2 folders, pick any file from A and any file from B, compare, export reports + bundles</div>
+</div>
+</div>
+<div class="actions"><div class="themewrap"><label class="themelabel">Theme</label><select class="select themeSelect" id="themeSelect"><option value="default">Default</option><option value="beach">Beach</option><option value="slate">Slate</option><option value="emerald">Emerald</option><option value="sunset">Sunset</option><option value="mono">Mono</option></select></div>
+<button class="btn" id="btnClear">Clear</button>
+<button class="btn" id="btnRecompute">Recompute Report</button>
+<label class="btn filebtn">
+        Load Folder A
+        <input directory="" hidden="" id="pickA" multiple="" type="file" webkitdirectory=""/>
+</label>
+<label class="btn filebtn">
+        Load Folder B
+        <input directory="" hidden="" id="pickB" multiple="" type="file" webkitdirectory=""/>
+</label>
+</div>
+</header>
+<main class="grid">
+<section class="panel folderA collapsible" data-panel="folderA">
+<div class="panelhead">
+<div class="paneltitle">Folder A</div><button class="helpbtn" data-help="folderA" title="Help">💡</button>
+<div class="panelmeta" id="metaA">Not loaded</div>
+<button class="collapsebtn" title="Collapse/Expand" type="button">▾</button></div>
+<div class="dropzone" id="dropA">
+<div class="droptext"><div class="droprow"><div class="dropbig">Drop Folder A here</div><div class="droproot" id="rootAName"></div></div>
+
+<div class="dropsmall">Or use “Load Folder A”</div>
+</div>
+</div>
+<div class="toolbar">
+<input class="search" id="searchA" placeholder="Search in A (path contains)..."/>
+<select class="select" id="filterA">
+<option value="all">All</option>
+<option value="text">Text only</option>
+<option value="code">Code-ish</option>
+<option value="only">Only in A</option>
+<option value="diff">Diff vs B (same path)</option>
+<option value="same">Same vs B (same path)</option>
+<option value="moved">Moved/Renamed (hash)</option>
+</select>
+</div>
+<div class="tree" id="treeA"></div>
+</section>
+<section class="panel folderB collapsible" data-panel="folderB">
+<div class="panelhead">
+<div class="paneltitle">Folder B</div><button class="helpbtn" data-help="folderB" title="Help">💡</button>
+<div class="panelmeta" id="metaB">Not loaded</div>
+<button class="collapsebtn" title="Collapse/Expand" type="button">▾</button></div>
+<div class="dropzone" id="dropB">
+<div class="droptext"><div class="droprow"><div class="dropbig">Drop Folder B here</div><div class="droproot" id="rootBName"></div></div>
+
+<div class="dropsmall">Or use “Load Folder B”</div>
+</div>
+</div>
+<div class="toolbar">
+<input class="search" id="searchB" placeholder="Search in B (path contains)..."/>
+<select class="select" id="filterB">
+<option value="all">All</option>
+<option value="text">Text only</option>
+<option value="code">Code-ish</option>
+<option value="only">Only in B</option>
+<option value="diff">Diff vs A (same path)</option>
+<option value="same">Same vs A (same path)</option>
+<option value="moved">Moved/Renamed (hash)</option>
+</select>
+</div>
+<div class="tree" id="treeB"></div>
+</section>
+<section class="viewer diffBox">
+<div class="viewertabs">
+<button class="tab active" data-tab="files">Files</button>
+<button class="tab" data-tab="structure">Structure</button>
+<button class="tab" data-tab="overlay">Overlay</button>
+</div>
+<div class="viewerhead">
+<div class="viewerleft">
+<div class="viewertitle" id="activePath">A: —  |  B: —</div>
+<div class="viewermeta" id="activeMeta"></div>
+</div>
+<div class="viewerright">
+<label class="toggle" title="When enabled, clicking a file in one tree auto-selects the same relative path in the other side (if present), or the exact-hash moved/renamed match.">
+<input id="toggleLink" type="checkbox"/>
+<span>Link selections</span>
+</label>
+<button class="btn" id="btnSuggestA" title="Find best match in B for the currently selected A file">Suggest match for A</button>
+<button class="btn" id="btnSuggestB" title="Find best match in A for the currently selected B file">Suggest match for B</button>
+<label class="toggle" title="Diff mode. Manual compare still shows similarity scoring.">
+<input id="toggleDiff" type="checkbox"/>
+<span>Diff mode</span>
+</label>
+<select class="select" id="diffMode">
+<option value="side">Side-by-side</option>
+<option value="inline">Inline</option>
+</select>
+<select class="select" id="encodingMode" title="If decoding looks wrong, force a mode here (applies on next load)">
+<option value="auto">Encoding: Auto</option>
+<option value="utf-8">UTF-8</option>
+<option value="utf-16">UTF-16 (BOM)</option>
+<option value="windows-1252">Windows-1252</option>
+</select>
+<button class="btn" id="btnExpand">Expand</button>
+<button class="btn" id="btnCopy">Copy View</button>
+<div class="btnsplit">
+<button class="btn" id="btnExportReportJson">Report JSON</button>
+<button class="btn" id="btnExportReportCsv">Report CSV</button>
+</div>
+<div class="btnsplit">
+<button class="btn" id="btnBundleA">Bundle A</button>
+<button class="btn" id="btnBundleB">Bundle B</button>
+<button class="btn" id="btnBundleBoth">Bundle Both</button>
+</div>
+</div>
+</div>
+<div class="viewerbody">
+<div class="reportcard">
+<div class="reporthead">
+<div class="reporttitle">Comparison Report (path pairing)</div><button class="helpbtn" data-help="report" title="Help">💡</button>
+<div class="reportmeta" id="reportMeta">Load both folders to compute.</div>
+</div>
+<div class="reportgrid" id="reportGrid"></div>
+</div>
+<div class="reportcard">
+<div class="reporthead">
+<div class="reporttitle">Manual Compare Similarity</div><button class="helpbtn" data-help="similarity" title="Help">💡</button>
+<div class="reportmeta" id="similarityMeta">Select any file in A and any file in B.</div>
+</div>
+<div class="reportgrid" id="similarityGrid"></div>
+<div class="suggestions" id="suggestions"></div>
+</div>
+<div class="divider"></div>
+<div class="twopane" id="paneWrap">
+<div class="codepane">
+<div class="codehead">
+<span>A</span>
+<span class="codehint" id="hintA"></span>
+</div>
+<pre class="code" id="codeA"></pre>
+</div>
+<div class="codepane">
+<div class="codehead">
+<span>B</span>
+<span class="codehint" id="hintB"></span>
+</div>
+<pre class="code" id="codeB"></pre>
+</div>
+</div>
+<div class="inlinepane hidden" id="inlineWrap">
+<div class="codehead">
+<span>Diff</span>
+<span class="codehint" id="hintInline"></span>
+</div>
+<pre class="code" id="codeInline"></pre>
+</div>
+</div>
+<div class="statusbar" id="statusbar">Ready.</div>
+</section>
+<section class="panel ignore collapsible" data-panel="ignore">
+<div class="panelhead">
+<div class="paneltitle">Ignore Rules</div><button class="helpbtn" data-help="ignore" title="Help">💡</button>
+<div class="panelmeta">Applied on load. Re-load folder(s) to reapply.</div>
+<button class="collapsebtn" title="Collapse/Expand" type="button">▾</button></div>
+<div class="ignorebox">
+<div class="ignorelabel">Custom ignore (one per line, supports * and **)</div>
+<textarea class="ignoreinput" id="customIgnore" spellcheck="false"></textarea>
+<div class="ignorelabel">Defaults (always included)</div>
+<div class="ignoredefaults" id="ignoreDefaults"></div>
+<div class="ignorelabel">.gitignore (auto)</div>
+<div class="ignorenote">
+          If a folder contains a <span class="mono">.gitignore</span>, patterns are loaded and applied. Nested .gitignore is supported.
+        </div>
+</div>
+</section>
+<section class="panel pack collapsible" data-panel="pack">
+<div class="panelhead">
+<div class="paneltitle">Pack Merge</div><button class="helpbtn" data-help="pack" title="Help">💡</button>
+<div class="panelmeta">Create “packs” from a subfolder, then merge many packs into one de-duplicated bundle.</div>
+<button class="collapsebtn" title="Collapse/Expand" type="button">▾</button></div>
+<div class="ignorebox">
+<div class="ignorelabel">Subfolder path (relative inside each loaded/uploaded folder)</div>
+<div class="row">
+<input class="search" id="packSubfolder" placeholder="Example: backend/routers (or data, ui, etc.)"/>
+<button class="btn" id="btnListSubfolders">List</button>
+</div>
+<div class="ignorelabel">Quick pick from loaded folders</div>
+<div class="row">
+<select class="select" id="packSide">
+<option value="A">From loaded A</option>
+<option value="B">From loaded B</option>
+</select>
+<button class="btn" id="btnUseSelectedA">Use selected A folder</button>
+<button class="btn" id="btnUseSelectedB">Use selected B folder</button>
+</div>
+<div class="row">
+<button class="btn" id="btnAddPackFromLoaded">Add pack from loaded</button>
+<label class="btn filebtn">
+            Add pack from folder upload
+            <input directory="" hidden="" id="pickPackFolder" multiple="" type="file" webkitdirectory=""/>
+</label>
+</div>
+<div class="ignorelabel">Packs</div>
+<div class="packlist" id="packList"></div>
+<div class="row">
+<button class="btn" id="btnMergePacks">Merge packs → bundle.txt + manifest.json</button>
+<button class="btn" id="btnClearPacks">Clear packs</button>
+</div>
+<div class="ignorenote">
+          De-dupe rule: if two files have the same <span class="mono">PATH</span> and identical SHA-256 → keep one.
+          If the same <span class="mono">PATH</span> has different SHA-256 across packs → keep all variants (suffix added).
+        </div>
+</div>
+</section>
+</main>
+<script src="app.js"></script>
+<div aria-labelledby="helpTitle" aria-modal="true" class="modal hidden" id="helpModal" role="dialog">
+<div class="modalbox">
+<div class="modalhead">
+<div class="modaltitle" id="helpTitle">Help</div>
+<button class="modalclose" id="helpClose" title="Close">✕</button>
+</div>
+<div class="modalbody" id="helpContent"></div>
+</div>
+</div>
+</body>
+</html>
