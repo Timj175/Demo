@@ -1,6 +1,7 @@
-/* Portfolio behaviour: scene crossfade, video sync, AI / Non-AI filter. No dependencies. */
+/* Portfolio behaviour: scene crossfade, video sync, AI-backed / AI-ready / Non-AI filter. No dependencies. */
 (function () {
-  var AI = { 1: true, 2: true }; // Lucy and SympliLyfe are AI-backed
+  var TAG = { 1: 'ready', 2: 'backed' }; // Lucy is AI-ready, SympliLyfe is AI-backed; everything else is Non-AI
+  var ORDER = [4, 7, 5, 6, 8, 9, 10, 11, 1, 2, 3]; // display order: productivity builds, then enterprise and product builds
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var layersEl = document.getElementById('layers');
   var layers = layersEl ? Array.prototype.slice.call(layersEl.children) : [];
@@ -43,7 +44,7 @@
   function setFilter(key) {
     filter = key;
     for (var n = 1; n <= 11; n++) {
-      var show = key === 'all' || (key === 'ai' ? !!AI[n] : !AI[n]);
+      var show = key === 'all' || (key === 'ai' ? TAG[n] === 'backed' : key === 'ready' ? TAG[n] === 'ready' : !TAG[n]);
       if (sections[n]) sections[n].style.display = show ? '' : 'none';
       var a = document.querySelector('.dots a[href="#ch' + n + '"]'); if (a) a.style.display = show ? '' : 'none';
     }
@@ -53,7 +54,7 @@
       b.style.background = on ? '#0F1B2D' : 'rgba(255,255,255,0.85)';
       b.style.color = on ? '#FFFFFF' : '#0F1B2D';
     });
-    var first = null; for (var m = 1; m <= 11; m++) if (sections[m] && sections[m].style.display !== 'none') { first = sections[m]; break; }
+    var first = null; for (var m = 0; m < ORDER.length; m++) { var sec = sections[ORDER[m]]; if (sec && sec.style.display !== 'none') { first = sec; break; } }
     var start = document.querySelector('a[href^="#ch"][style*="background: rgb(15, 27, 45)"]');
     if (start && first) start.setAttribute('href', '#' + first.id);
     if (active !== 0 && first) first.scrollIntoView({ block: 'start' });
@@ -62,7 +63,7 @@
 
   Array.prototype.forEach.call(document.querySelectorAll('button'), function (b) {
     var t = (b.textContent || '').trim();
-    var key = /^All/.test(t) ? 'all' : /^AI-backed/.test(t) ? 'ai' : /^Non-AI/.test(t) ? 'plain' : null;
+    var key = /^All/.test(t) ? 'all' : /^AI-backed/.test(t) ? 'ai' : /^AI-ready/.test(t) ? 'ready' : /^Non-AI/.test(t) ? 'plain' : null;
     if (key) { b.setAttribute('data-filter', key); b.addEventListener('click', function () { setFilter(key); }); }
   });
   window.addEventListener('scroll', onScroll, true);

@@ -1,6 +1,6 @@
 # Tim Jones: Portfolio
 
-A single scrolling page that shows the apps and tools I have built, with real screen recordings of each one running behind the chapter cards. Each chapter is tagged **AI-backed** or **Non-AI**, and **Tool**, **App** or **Site**, and the page has a filter to show either set.
+A single scrolling page that shows the apps and tools I have built, with real screen recordings of each one running behind the chapter cards. Each chapter is tagged **AI-backed**, **AI-ready, not dependent** or **Non-AI**, and **Tool**, **App** or **Flagship app**. The page has a filter for each AI tag, and the chapters are grouped as productivity builds first, then enterprise and product builds.
 
 **Live site:** https://timj175.github.io/Demo/
 
@@ -11,7 +11,7 @@ Built to support an application for a GenAI Engineer role. It is about what I ca
 | Path | What it is |
 |---|---|
 | `index.html` | The portfolio page. Opens in any browser, no build step. |
-| `site.js` | Scene switching as you scroll, the All / AI-backed / Non-AI filter, video sync. |
+| `site.js` | Scene switching as you scroll, the All / AI-backed / AI-ready / Non-AI filter, video sync. |
 | `assets/` | Demo recordings (MP4) with poster images, the training deck PDF and slide stills. |
 | `demos/folder-diff/` | Folder Reader + Diff. Compares two folders entirely in the browser. |
 | `demos/markdown-viewer/` | Markdown Viewer Enhanced. Loads its libraries from public CDNs. |
@@ -34,7 +34,9 @@ Then open http://localhost:8000.
 
 - All footage uses invented sample data.
 - Some videos show applications that are not published here. Only the three demos under `demos/` are runnable from this repository.
-- Chapter tags: Lucy and SympliLyfe are AI-backed. Everything else is Non-AI. The list is the first line of `site.js`.
+- Chapter tags: SympliLyfe is AI-backed, Lucy is AI-ready but not AI-dependent, and everything else is Non-AI. The tag list and the display order are the first lines of `site.js`.
+- Order: Trackd and its tools (productivity builds) come first, then Lucy, SympliLyfe and Atlas (enterprise and product builds), with SympliLyfe and Atlas as the two larger builds.
+- Atlas is the v3.3.0 prototype. Language learning lives only in Atlas, not in SympliLyfe.
 - Trackd is shown as its own item, followed by five of its tools as separate items: Mini, Forger, Document Editor, MS Assist and FileSearchPro.
 
 ## Updating the page

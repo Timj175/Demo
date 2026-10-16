@@ -2,6 +2,16 @@
 
 All notable changes to this repository are listed here. Format follows Keep a Changelog; versions follow Semantic Versioning.
 
+## [1.2.0] - 2026-10-16
+
+### Changed
+- Atlas replaced with the v3.3.0 prototype (language journeys, light and motion layer). New demo clip and poster. The Atlas link still opens the runnable prototype in `demos/atlas/`.
+- Language learning removed from SympliLyfe, because it now lives only in Atlas. The SympliLyfe clip is trimmed to drop the language and Atlas-doorway screens.
+- Trackd rewritten: no server, recording or transcription wording. It now describes meeting notes and minutes linked to projects and tagged. New clip with those areas hidden. Mini, MS Assist and FileSearchPro descriptions updated to match.
+- Lucy is tagged AI-ready, not dependent. A third filter, AI-ready, is added beside AI-backed and Non-AI.
+- Items are grouped: productivity builds first, then enterprise and product builds, with SympliLyfe and Atlas last as the two larger builds.
+- Depth card: the reading list now comes first, then a divider, then the training deck.
+
 ## [1.1.0] - 2026-10-16
 
 ### Changed
