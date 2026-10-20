@@ -2,6 +2,19 @@
 
 All notable changes to this repository are listed here. Format follows Keep a Changelog; versions follow Semantic Versioning.
 
+## [1.3.1] - 2026-10-20
+
+### Added
+- "Why I built it" paragraph on SympliLyfe, Atlas, AI Admin Dashboard, Folder Reader + Diff, Markdown Viewer Enhanced, Forger, Document Editor, MS Assist and FileSearchPro, in my own words.
+- Lucy footage now covers everything: all four quadrants (pin slots, Insights, Social) with drag between them and expand, the movable orb, the fan-out tool rail, Quick Search, the approval check, WorkSphere, Book of Work, every Add New item type, Settings, Notifications, the admin queue and full-screen chat. Lucy's card lists each of these.
+
+### Changed
+- Atlas is described as still being built. The "no server" and "seeded" wording is removed everywhere, including the Atlas demo page and the Atlas clip, which was re-recorded.
+- Folder Reader + Diff and Forger no longer say "no server".
+- Placeholder links and "next" rows removed. Chapters with no live demo no longer show a link.
+- The dead "Download resume" buttons are removed. The header link and hero button now say Contact.
+- Contact order: email buttons first, GitHub last.
+
 ## [1.3.0] - 2026-10-20
 
 ### Added
