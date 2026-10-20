@@ -2,6 +2,12 @@
 
 All notable changes to this repository are listed here. Format follows Keep a Changelog; versions follow Semantic Versioning.
 
+## [1.3.2] - 2026-10-20
+
+### Changed
+- Atlas is now tagged AI-backed, so three items are AI-backed (SympliLyfe, Atlas, AI Admin Dashboard). Its card has a "How the AI works" write-up: guides, voice, practice, events, guardrails and fallbacks, with a status line saying the app is still being built.
+- Filter counts: All 12, AI-backed 3, AI-ready 1, Non-AI 8.
+
 ## [1.3.1] - 2026-10-20
 
 ### Added

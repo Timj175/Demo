@@ -1,6 +1,6 @@
 /* Portfolio behaviour: scene crossfade, video sync, AI-backed / AI-ready / Non-AI filter. No dependencies. */
 (function () {
-  var TAG = { 1: 'ready', 2: 'backed', 14: 'backed' }; // Lucy is AI-ready, SympliLyfe and the AI Admin Dashboard are AI-backed; everything else is Non-AI
+  var TAG = { 1: 'ready', 2: 'backed', 3: 'backed', 14: 'backed' }; // Lucy is AI-ready; SympliLyfe, Atlas and the AI Admin Dashboard are AI-backed; everything else is Non-AI
   var ORDER = [4, 7, 5, 6, 8, 9, 10, 11, 1, 14, 2, 3]; // display order: productivity builds, then enterprise and product builds
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var layersEl = document.getElementById('layers');

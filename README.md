@@ -34,7 +34,7 @@ Then open http://localhost:8000.
 
 - All footage uses invented sample data.
 - Some videos show applications that are not published here. Only the three demos under `demos/` are runnable from this repository.
-- Chapter tags: SympliLyfe and the AI Admin Dashboard are AI-backed, Lucy is AI-ready but not AI-dependent, and everything else is Non-AI. The tag list and the display order are the first lines of `site.js`.
+- Chapter tags: SympliLyfe, Atlas and the AI Admin Dashboard are AI-backed, Lucy is AI-ready but not AI-dependent, and everything else is Non-AI. The tag list and the display order are the first lines of `site.js`.
 - Order: Trackd and its tools (productivity builds) come first, then Lucy, SympliLyfe and Atlas (enterprise and product builds), with SympliLyfe and Atlas as the two larger builds.
 - Atlas is the v3.3.0 prototype. Language learning lives only in Atlas, not in SympliLyfe.
 - Trackd is shown as its own item, followed by five of its tools as separate items: Mini, Forger, Document Editor, MS Assist and FileSearchPro.
