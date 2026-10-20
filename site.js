@@ -1,13 +1,13 @@
 /* Portfolio behaviour: scene crossfade, video sync, AI-backed / AI-ready / Non-AI filter. No dependencies. */
 (function () {
-  var TAG = { 1: 'ready', 2: 'backed' }; // Lucy is AI-ready, SympliLyfe is AI-backed; everything else is Non-AI
-  var ORDER = [4, 7, 5, 6, 8, 9, 10, 11, 1, 2, 3]; // display order: productivity builds, then enterprise and product builds
+  var TAG = { 1: 'ready', 2: 'backed', 14: 'backed' }; // Lucy is AI-ready, SympliLyfe and the AI Admin Dashboard are AI-backed; everything else is Non-AI
+  var ORDER = [4, 7, 5, 6, 8, 9, 10, 11, 1, 14, 2, 3]; // display order: productivity builds, then enterprise and product builds
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var layersEl = document.getElementById('layers');
   var layers = layersEl ? Array.prototype.slice.call(layersEl.children) : [];
-  var layerIndex = [0, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // DOM order of the background layers
+  var layerIndex = [0, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 12]; // DOM order of the background layers
   var sections = [];
-  for (var i = 0; i <= 13; i++) { var el = document.getElementById('ch' + i); if (el) sections[i] = el; }
+  for (var i = 0; i <= 14; i++) { var el = document.getElementById('ch' + i); if (el) sections[i] = el; }
   var active = 0, filter = 'all';
 
   function setLayers() {
@@ -36,14 +36,14 @@
   var raf = 0;
   function pick() {
     raf = 0; var best = 0, bn = -1, cur = visible(active);
-    for (var n = 0; n <= 13; n++) { var v = visible(n); if (v > best) { best = v; bn = n; } }
+    for (var n = 0; n <= 14; n++) { var v = visible(n); if (v > best) { best = v; bn = n; } }
     if (bn >= 0 && bn !== active && best > cur + 24) { active = bn; setLayers(); }
   }
   function onScroll() { if (!raf) raf = requestAnimationFrame(pick); }
 
   function setFilter(key) {
     filter = key;
-    for (var n = 1; n <= 11; n++) {
+    for (var n = 1; n <= 14; n++) {
       var show = key === 'all' || (key === 'ai' ? TAG[n] === 'backed' : key === 'ready' ? TAG[n] === 'ready' : !TAG[n]);
       if (sections[n]) sections[n].style.display = show ? '' : 'none';
       var a = document.querySelector('.dots a[href="#ch' + n + '"]'); if (a) a.style.display = show ? '' : 'none';

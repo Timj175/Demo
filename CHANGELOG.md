@@ -2,6 +2,16 @@
 
 All notable changes to this repository are listed here. Format follows Keep a Changelog; versions follow Semantic Versioning.
 
+## [1.3.0] - 2026-10-20
+
+### Added
+- AI Admin Dashboard chapter (AI-backed, Platform tool): one console across all apps, with a cross-provider AI Lab (OpenAI, Claude, Gemini), endpoint tester, data editor, diagnostics and health checks. New clip and poster, captioned as sample data.
+- AI-backed count is now two (SympliLyfe and the AI Admin Dashboard).
+
+### Changed
+- SympliLyfe "How the AI works" expanded: model allowlist, the shared route pipeline, spending caps, emergency and moderation safety paths, privacy-safe telemetry and deterministic fallbacks.
+- Hero sentence, filter counts, chapter numbering and navigation dots updated for twelve items.
+
 ## [1.2.1] - 2026-10-16
 
 ### Changed
