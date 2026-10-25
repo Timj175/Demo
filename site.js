@@ -1,67 +1,138 @@
-/* Portfolio behaviour: scene crossfade, video sync, AI-backed / AI-ready / Non-AI filter. No dependencies. */
+/* Portfolio behaviour: scene crossfade, video sync, AI-step pauses, AI-backed / AI-ready / Non-AI filter. No dependencies.
+   The AI-step text lives in cues.js (generated from the same table the design file uses). */
 (function () {
   var TAG = { 1: 'ready', 2: 'backed', 3: 'backed', 14: 'backed' }; // Lucy is AI-ready; SympliLyfe, Atlas and the AI Admin Dashboard are AI-backed; everything else is Non-AI
-  var ORDER = [4, 7, 5, 6, 8, 9, 10, 11, 1, 14, 2, 3]; // display order: productivity builds, then enterprise and product builds
+  var FEATURED = [2, 14, 3, 1, 4, 6]; // full-screen chapters, in page order
+  var CUES = window.CUES || {};
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var layersEl = document.getElementById('layers');
-  var layers = layersEl ? Array.prototype.slice.call(layersEl.children) : [];
-  var layerIndex = [0, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 12]; // DOM order of the background layers
-  var sections = [];
-  for (var i = 0; i <= 14; i++) { var el = document.getElementById('ch' + i); if (el) sections[i] = el; }
-  var active = 0, filter = 'all';
+  var layers = Array.prototype.slice.call(document.querySelectorAll('[data-layer]'));
+  var panel = document.querySelector('.aipanel');
+  var active = 0, filter = 'all', openCue = null, skip = false;
+  var seen = {}, lastT = {};
+
+  function q(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function sceneOf(a) { var h = a.getAttribute('href') || ''; if (h === '#more') return 13; return Number(h.replace('#ch', '')); }
 
   function setLayers() {
-    layers.forEach(function (l, k) { l.style.opacity = layerIndex[k] === active ? '1' : '0'; });
-    var dotSpans = document.querySelectorAll('.dots a span');
-    Array.prototype.forEach.call(dotSpans, function (s) {
-      var n = Number(s.parentNode.getAttribute('href').replace('#ch', ''));
-      var on = n === active;
+    layers.forEach(function (l) { l.style.opacity = Number(l.getAttribute('data-layer')) === active ? '1' : '0'; });
+    q('.dots a').forEach(function (a) {
+      var s = a.querySelector('span'); var on = sceneOf(a) === active;
       s.style.width = s.style.height = on ? '14px' : '10px';
       s.style.background = on ? '#F5B335' : 'rgba(255,255,255,0.9)';
     });
     syncVideos();
   }
   function syncVideos() {
-    Array.prototype.forEach.call(document.querySelectorAll('video[data-v]'), function (v) {
-      var on = Number(v.getAttribute('data-v')) === active;
+    q('video[data-v]').forEach(function (v) {
+      var n = Number(v.getAttribute('data-v')), on = n === active;
       v.muted = true;
-      if (on && !reduced) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else { v.pause(); }
+      if (on && !reduced) {
+        if (openCue) return;
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      } else {
+        v.pause();
+        if (!on && CUES[n]) { try { v.currentTime = 0; } catch (e) {} seen[n] = {}; }
+      }
     });
   }
-  function visible(n) {
-    var s = sections[n]; if (!s || s.style.display === 'none') return 0;
-    var t = s.querySelector('[data-card]') || s, r = t.getBoundingClientRect(), vh = window.innerHeight;
+
+  /* ---- AI-step pause panel ---- */
+  function hlStyle(b) {
+    return 'position: absolute; left: ' + b[0] + '%; top: ' + b[1] + '%; width: ' + b[2] + '%; height: ' + b[3] + '%; box-sizing: border-box; border: 3px solid #F5B335; border-radius: 6px; box-shadow: 0 0 0 9999px rgba(8,12,22,0.55); pointer-events: none';
+  }
+  function clearHl() { q('[data-hl]').forEach(function (e) { e.style.cssText = 'display: none'; }); }
+  function closePanel() { openCue = null; if (panel) panel.style.display = 'none'; clearHl(); }
+  function showPanel(scene, i) {
+    var list = CUES[scene], c = list[i];
+    openCue = { scene: scene, i: i };
+    panel.querySelector('.ai-count').textContent = 'AI step ' + (i + 1) + ' of ' + list.length;
+    panel.querySelector('.ai-title').textContent = c.title;
+    panel.querySelector('.ai-what').textContent = c.what;
+    var how = panel.querySelector('.ai-how'); how.innerHTML = '';
+    c.how.forEach(function (t) {
+      var d = document.createElement('div');
+      d.style.cssText = 'font-size: 14px; line-height: 1.45; padding-left: 12px; border-left: 3px solid #0F1B2D; color: #1F2D40';
+      d.textContent = t; how.appendChild(d);
+    });
+    var note = panel.querySelector('.ai-note'); note.textContent = c.note || ''; note.style.display = c.note ? '' : 'none';
+    clearHl();
+    var hl = document.querySelector('[data-hl="' + scene + '"]'); if (hl) hl.style.cssText = hlStyle(c.box);
+    panel.style.display = '';
+    setTimeout(function () { var b = panel.querySelector('.ai-continue'); if (b && b.focus) { try { b.focus({ preventScroll: true }); } catch (e) { b.focus(); } } }, 80);
+  }
+  function playScene(n) {
+    if (reduced) return;
+    var v = document.querySelector('video[data-v="' + n + '"]');
+    if (v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  }
+  function resume(doSkip) {
+    var c = openCue; closePanel(); if (doSkip) skip = true;
+    if (c && c.scene === active) playScene(c.scene);
+  }
+  function checkCue() {
+    if (reduced || skip || openCue) return;
+    var list = CUES[active]; if (!list) return;
+    var v = document.querySelector('video[data-v="' + active + '"]');
+    if (!v || v.paused || v.seeking) return;
+    var t = v.currentTime;
+    if (lastT[active] != null && t < lastT[active] - 0.5) seen[active] = {};
+    lastT[active] = t;
+    var s = seen[active] || (seen[active] = {});
+    for (var i = 0; i < list.length; i++) {
+      if (!s[i] && t >= list[i].t && t < list[i].t + 1.5) { s[i] = true; v.pause(); showPanel(active, i); return; }
+    }
+  }
+  if (panel) {
+    panel.querySelector('.ai-continue').addEventListener('click', function () { resume(false); });
+    panel.querySelector('.ai-skip').addEventListener('click', function () { resume(true); });
+    closePanel();
+  }
+  window.addEventListener('keydown', function (e) { if (e.key === 'Escape' && openCue) resume(false); });
+  setInterval(checkCue, 120);
+
+  /* ---- which scene is on screen ---- */
+  function visible(el) {
+    if (!el || getComputedStyle(el).display === 'none') return 0;
+    var t = el.querySelector('[data-card]') || el, r = t.getBoundingClientRect(), vh = window.innerHeight;
     return Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0));
   }
   var raf = 0;
   function pick() {
-    raf = 0; var best = 0, bn = -1, cur = visible(active);
-    for (var n = 0; n <= 14; n++) { var v = visible(n); if (v > best) { best = v; bn = n; } }
-    if (bn >= 0 && bn !== active && best > cur + 24) { active = bn; setLayers(); }
+    raf = 0; var best = 0, bn = -1, cur = 0;
+    q('[data-scene]').forEach(function (el) {
+      var n = Number(el.getAttribute('data-scene')); if (isNaN(n)) return;
+      var v = visible(el); if (n === active) cur = Math.max(cur, v); if (v > best) { best = v; bn = n; }
+    });
+    if (bn >= 0 && bn !== active && best > cur + 24) { active = bn; closePanel(); skip = false; setLayers(); }
   }
   function onScroll() { if (!raf) raf = requestAnimationFrame(pick); }
 
+  /* ---- filter ---- */
   function setFilter(key) {
     filter = key;
-    for (var n = 1; n <= 14; n++) {
-      var show = key === 'all' || (key === 'ai' ? TAG[n] === 'backed' : key === 'ready' ? TAG[n] === 'ready' : !TAG[n]);
-      if (sections[n]) sections[n].style.display = show ? '' : 'none';
-      var a = document.querySelector('.dots a[href="#ch' + n + '"]'); if (a) a.style.display = show ? '' : 'none';
-    }
-    Array.prototype.forEach.call(document.querySelectorAll('button[data-filter]'), function (b) {
+    function show(n) { return key === 'all' || (key === 'ai' ? TAG[n] === 'backed' : key === 'ready' ? TAG[n] === 'ready' : !TAG[n]); }
+    FEATURED.forEach(function (n) {
+      var sec = document.getElementById('ch' + n); if (sec) sec.style.display = show(n) ? '' : 'none';
+      var a = document.querySelector('.dots a[href="#ch' + n + '"]'); if (a) a.style.display = show(n) ? '' : 'none';
+    });
+    var any = 0;
+    q('.gcard').forEach(function (c) { var on = show(Number(c.getAttribute('data-idx'))); c.style.display = on ? '' : 'none'; if (on) any++; });
+    var more = document.getElementById('more'); if (more) more.style.display = any ? '' : 'none';
+    var md = document.querySelector('.dots a[href="#more"]'); if (md) md.style.display = any ? '' : 'none';
+    q('button[data-filter]').forEach(function (b) {
       var on = b.getAttribute('data-filter') === key;
       b.setAttribute('aria-pressed', on ? 'true' : 'false');
       b.style.background = on ? '#0F1B2D' : 'rgba(255,255,255,0.85)';
       b.style.color = on ? '#FFFFFF' : '#0F1B2D';
     });
-    var first = null; for (var m = 0; m < ORDER.length; m++) { var sec = sections[ORDER[m]]; if (sec && sec.style.display !== 'none') { first = sec; break; } }
-    var start = document.querySelector('a[href^="#ch"][style*="background: rgb(15, 27, 45)"]');
-    if (start && first) start.setAttribute('href', '#' + first.id);
-    if (active !== 0 && first) first.scrollIntoView({ block: 'start' });
+    var first = null;
+    for (var m = 0; m < FEATURED.length; m++) { var s = document.getElementById('ch' + FEATURED[m]); if (s && s.style.display !== 'none') { first = s; break; } }
+    var start = document.querySelector('a[data-start]');
+    if (start) start.setAttribute('href', first ? '#' + first.id : '#ch12');
+    if (active !== 0) { var target = first || document.getElementById('ch12'); if (target) target.scrollIntoView({ block: 'start' }); }
     setTimeout(pick, 60);
   }
-
-  Array.prototype.forEach.call(document.querySelectorAll('button'), function (b) {
+  q('button').forEach(function (b) {
     var t = (b.textContent || '').trim();
     var key = /^All/.test(t) ? 'all' : /^AI-backed/.test(t) ? 'ai' : /^AI-ready/.test(t) ? 'ready' : /^Non-AI/.test(t) ? 'plain' : null;
     if (key) { b.setAttribute('data-filter', key); b.addEventListener('click', function () { setFilter(key); }); }

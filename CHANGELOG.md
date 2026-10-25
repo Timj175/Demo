@@ -2,6 +2,19 @@
 
 All notable changes to this repository are listed here. Format follows Keep a Changelog; versions follow Semantic Versioning.
 
+## [1.4.0] - 2026-10-25
+
+### Added
+- Contact details (personal email, professional email, GitHub) now sit in the hero at the top, with a slot for a photo. The slot stays hidden until a photo is added.
+- AI steps: when a featured demo reaches an AI step it pauses, highlights the part of the screen involved, and shows what the AI is doing and how, with Continue and Skip buttons. Escape also continues. SympliLyfe has 3 steps, AI Admin Dashboard 3, Lucy 2 and Atlas 4. The text is in `cues.js`.
+- "More builds": the remaining six builds sit side by side as cards, each with its recording and a fold-out for what it does and why I built it.
+
+### Changed
+- Page structure: six featured builds get full-screen chapters (SympliLyfe, AI Admin Dashboard, Atlas, Lucy, Trackd, Markdown Viewer Enhanced). Previously all twelve were full-screen chapters.
+- The AI Admin Dashboard clip was re-recorded with corrected cost estimates (the earlier clip showed a cost about 100 times too high for the tokens used).
+- The Lucy clip was re-recorded so the saved Insight title no longer shows raw markdown.
+- The nav "Contact" link goes to the hero contact block. The closing contact block is shorter.
+
 ## [1.3.3] - 2026-10-25
 
 ### Fixed

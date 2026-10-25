@@ -1,6 +1,6 @@
 # Tim Jones: Portfolio
 
-A single scrolling page that shows the apps and tools I have built, with real screen recordings of each one running behind the chapter cards. Each chapter is tagged **AI-backed**, **AI-ready, not dependent** or **Non-AI**, and **Tool**, **App** or **Flagship app**. The page has a filter for each AI tag, and the chapters are grouped as productivity builds first, then enterprise and product builds.
+A single scrolling page that shows the apps and tools I have built. My contact details sit at the top. Six featured builds get full-screen chapters with a real screen recording running beside each card, and the other six sit side by side under "More builds". Each build is tagged **AI-backed**, **AI-ready, not dependent** or **Non-AI**, and **Tool**, **App** or **Flagship app**. The page has a filter for each AI tag. When a featured demo reaches an AI step it pauses and shows what the AI is doing and how, with Continue and Skip buttons.
 
 **Live site:** https://timj175.github.io/Demo/
 
@@ -11,7 +11,9 @@ Built to support an application for a GenAI Engineer role. It is about what I ca
 | Path | What it is |
 |---|---|
 | `index.html` | The portfolio page. Opens in any browser, no build step. |
-| `site.js` | Scene switching as you scroll, the All / AI-backed / AI-ready / Non-AI filter, video sync. |
+| `site.js` | Scene switching as you scroll, the All / AI-backed / AI-ready / Non-AI filter, video sync and the AI-step pauses. |
+| `cues.js` | The AI steps: for each demo, the second it pauses at, the area it highlights and the text it shows. Generated from the design file. |
+| `CNAME` | The custom domain for GitHub Pages. |
 | `assets/` | Demo recordings (MP4) with poster images, the training deck PDF and slide stills. |
 | `demos/folder-diff/` | Folder Reader + Diff. Compares two folders entirely in the browser. |
 | `demos/markdown-viewer/` | Markdown Viewer Enhanced. Loads its libraries from public CDNs. |
@@ -34,10 +36,12 @@ Then open http://localhost:8000.
 
 - All footage uses invented sample data.
 - Some videos show applications that are not published here. Only the three demos under `demos/` are runnable from this repository.
-- Chapter tags: SympliLyfe, Atlas and the AI Admin Dashboard are AI-backed, Lucy is AI-ready but not AI-dependent, and everything else is Non-AI. The tag list and the display order are the first lines of `site.js`.
-- Order: Trackd and its tools (productivity builds) come first, then Lucy, SympliLyfe and Atlas (enterprise and product builds), with SympliLyfe and Atlas as the two larger builds.
+- Chapter tags: SympliLyfe, Atlas and the AI Admin Dashboard are AI-backed, Lucy is AI-ready but not AI-dependent, and everything else is Non-AI. The tag list and the featured order are the first lines of `site.js`.
+- Featured, in page order: SympliLyfe, AI Admin Dashboard, Atlas, Lucy, Trackd and Markdown Viewer Enhanced. The rest (Trackd Mini, Folder Reader + Diff, Forger, Document Editor, MS Assist, FileSearchPro) are cards under "More builds".
+- AI-step pauses: SympliLyfe 3, AI Admin Dashboard 3, Lucy 2, Atlas 4. Atlas steps describe how the finished app works and say so on the panel. The clips are recordings on invented data, and each panel says whether a live model call is involved.
+- The photo slot in the hero stays empty until a photo is added, so the page shows no placeholder.
 - Atlas is the v3.3.0 prototype. Language learning lives only in Atlas, not in SympliLyfe.
-- Trackd is shown as its own item, followed by five of its tools as separate items: Mini, Forger, Document Editor, MS Assist and FileSearchPro.
+- Trackd is shown as its own featured item. Five of its tools appear as cards under "More builds": Mini, Forger, Document Editor, MS Assist and FileSearchPro.
 
 ## Updating the page
 
