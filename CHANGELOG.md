@@ -2,6 +2,11 @@
 
 All notable changes to this repository are listed here. Format follows Keep a Changelog; versions follow Semantic Versioning.
 
+## [1.3.3] - 2026-10-25
+
+### Fixed
+- The Atlas clip on the live page was still the earlier recording. It now uses the re-recorded clip, which no longer shows the word "seeded" or any no-server wording.
+
 ## [1.3.2] - 2026-10-20
 
 ### Changed
