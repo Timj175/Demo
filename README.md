@@ -1,6 +1,6 @@
 # Tim Jones: Portfolio
 
-A single scrolling page that shows the apps and tools I have built. My contact details sit at the top. Six featured builds get full-screen chapters with a real screen recording running beside each card, and the other six sit side by side under "More builds". Each build is tagged **AI-backed**, **AI-ready, not dependent** or **Non-AI**, and **Tool**, **App** or **Flagship app**. The page has a filter for each AI tag. When a featured demo reaches an AI step it pauses and shows what the AI is doing and how, with Continue and Skip buttons.
+A single scrolling page that shows the apps and tools I have built. My contact details sit at the top. Five featured builds get full-screen chapters with a real screen recording running beside each card, and the other seven sit side by side under "More builds". Each build is tagged **AI-backed**, **AI-ready, not dependent** or **Non-AI**, and **Tool**, **App** or **Flagship app**. The page has a filter for each AI tag. When a featured demo reaches an AI step it pauses, zooms in on the part of the screen involved, and shows what the AI is doing and how in a panel to the right of the demo, with Continue and Skip buttons.
 
 **Live site:** https://timj175.github.io/Demo/
 
@@ -37,8 +37,8 @@ Then open http://localhost:8000.
 - All footage uses invented sample data.
 - Some videos show applications that are not published here. Only the three demos under `demos/` are runnable from this repository.
 - Chapter tags: SympliLyfe, Atlas and the AI Admin Dashboard are AI-backed, Lucy is AI-ready but not AI-dependent, and everything else is Non-AI. The tag list and the featured order are the first lines of `site.js`.
-- Featured, in page order: SympliLyfe, AI Admin Dashboard, Atlas, Lucy, Trackd and Markdown Viewer Enhanced. The rest (Trackd Mini, Folder Reader + Diff, Forger, Document Editor, MS Assist, FileSearchPro) are cards under "More builds".
-- AI-step pauses: SympliLyfe 3, AI Admin Dashboard 3, Lucy 2, Atlas 4. Atlas steps describe how the finished app works and say so on the panel. The clips are recordings on invented data, and each panel says whether a live model call is involved.
+- Featured, in page order: SympliLyfe, AI Admin Dashboard, Atlas, Trackd and Folder Reader + Diff. The rest (Lucy, Markdown Viewer Enhanced, Trackd Mini, Forger, Document Editor, MS Assist, FileSearchPro) are cards under "More builds".
+- AI-step pauses: SympliLyfe 3, AI Admin Dashboard 3, Atlas 4. The panel docks to the right of the demo on wide screens, sits under it on mid-width screens and slides up from the bottom on phones. The zoom is per step, not tied to scrolling. Atlas steps describe how the finished app works and say so on the panel. The clips are recordings on invented data, and each panel says whether a live model call is involved.
 - The photo slot in the hero stays empty until a photo is added, so the page shows no placeholder.
 - Atlas is the v3.3.0 prototype. Language learning lives only in Atlas, not in SympliLyfe.
 - Trackd is shown as its own featured item. Five of its tools appear as cards under "More builds": Mini, Forger, Document Editor, MS Assist and FileSearchPro.

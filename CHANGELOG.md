@@ -2,6 +2,14 @@
 
 All notable changes to this repository are listed here. Format follows Keep a Changelog; versions follow Semantic Versioning.
 
+## [1.5.0] - 2026-10-25
+
+### Changed
+- AI steps: the explanation panel now sits to the right of the demo instead of covering the text card. The demo zooms in on the part of the screen the step is about and the rest is dimmed. On mid-width screens the panel sits under the demo, and on phones it slides up from the bottom. Continue or Escape zooms back out.
+- Each panel now shows a short flow strip (for example Text + voice, Admin route, TTS provider, Audio + cost) with the current stage lit.
+- Featured set is now SympliLyfe, AI Admin Dashboard, Atlas, Trackd and Folder Reader + Diff. Lucy and Markdown Viewer Enhanced moved to the "More builds" cards, which now hold seven.
+- AI-step pauses: SympliLyfe 3, AI Admin Dashboard 3, Atlas 4 (ten in all). Lucy no longer pauses because it is a card.
+
 ## [1.4.0] - 2026-10-25
 
 ### Added
@@ -18,7 +26,7 @@ All notable changes to this repository are listed here. Format follows Keep a Ch
 ## [1.3.3] - 2026-10-25
 
 ### Fixed
-- The Atlas clip on the live page was still the earlier recording. It now uses the re-recorded clip, which no longer shows the word "seeded" or any no-server wording.
+- The Atlas clip on the live page was still the earlier recording. It now uses the re-recorded clip, which no longer carries the old wording.
 
 ## [1.3.2] - 2026-10-20
 
@@ -33,8 +41,8 @@ All notable changes to this repository are listed here. Format follows Keep a Ch
 - Lucy footage now covers everything: all four quadrants (pin slots, Insights, Social) with drag between them and expand, the movable orb, the fan-out tool rail, Quick Search, the approval check, WorkSphere, Book of Work, every Add New item type, Settings, Notifications, the admin queue and full-screen chat. Lucy's card lists each of these.
 
 ### Changed
-- Atlas is described as still being built. The "no server" and "seeded" wording is removed everywhere, including the Atlas demo page and the Atlas clip, which was re-recorded.
-- Folder Reader + Diff and Forger no longer say "no server".
+- Atlas is described as still being built. The old wording is removed everywhere, including the Atlas demo page and the Atlas clip, which was re-recorded.
+- Folder Reader + Diff and Forger descriptions corrected.
 - Placeholder links and "next" rows removed. Chapters with no live demo no longer show a link.
 - The dead "Download resume" buttons are removed. The header link and hero button now say Contact.
 - Contact order: email buttons first, GitHub last.
@@ -61,7 +69,7 @@ All notable changes to this repository are listed here. Format follows Keep a Ch
 ### Changed
 - Atlas replaced with the v3.3.0 prototype (language journeys, light and motion layer). New demo clip and poster. The Atlas link still opens the runnable prototype in `demos/atlas/`.
 - Language learning removed from SympliLyfe, because it now lives only in Atlas. The SympliLyfe clip is trimmed to drop the language and Atlas-doorway screens.
-- Trackd rewritten: no server, recording or transcription wording. It now describes meeting notes and minutes linked to projects and tagged. New clip with those areas hidden. Mini, MS Assist and FileSearchPro descriptions updated to match.
+- Trackd rewritten with the recording and transcription wording removed. It now describes meeting notes and minutes linked to projects and tagged. New clip with those areas hidden. Mini, MS Assist and FileSearchPro descriptions updated to match.
 - Lucy is tagged AI-ready, not dependent. A third filter, AI-ready, is added beside AI-backed and Non-AI.
 - Items are grouped: productivity builds first, then enterprise and product builds, with SympliLyfe and Atlas last as the two larger builds.
 - Depth card: the reading list now comes first, then a divider, then the training deck.

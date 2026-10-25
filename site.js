@@ -1,8 +1,8 @@
-/* Portfolio behaviour: scene crossfade, video sync, AI-step pauses, AI-backed / AI-ready / Non-AI filter. No dependencies.
+/* Portfolio behaviour: scene crossfade, video sync, AI-step pauses with a camera that zooms onto the highlighted area, AI-backed / AI-ready / Non-AI filter. No dependencies.
    The AI-step text lives in cues.js (generated from the same table the design file uses). */
 (function () {
   var TAG = { 1: 'ready', 2: 'backed', 3: 'backed', 14: 'backed' }; // Lucy is AI-ready; SympliLyfe, Atlas and the AI Admin Dashboard are AI-backed; everything else is Non-AI
-  var FEATURED = [2, 14, 3, 1, 4, 6]; // full-screen chapters, in page order
+  var FEATURED = [2, 14, 3, 4, 5]; // full-screen chapters, in page order; Lucy (1) and the smaller tools sit in the More builds cards
   var CUES = window.CUES || {};
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var layers = Array.prototype.slice.call(document.querySelectorAll('[data-layer]'));
@@ -36,18 +36,62 @@
     });
   }
 
+
+  /* ---- camera: pan and zoom the demo onto the highlighted area, inside a window beside the panel ---- */
+  function camOn(scene, box, again) {
+    var layer = document.querySelector('[data-layer="' + scene + '"]');
+    if (!layer || !panel || !box) return;
+    var zone = layer.querySelector('.zone'), demo = layer.querySelector('.demo'), vid = layer.querySelector('video[data-v]');
+    if (!zone || !demo || !vid) return;
+    var pr = panel.getBoundingClientRect();
+    if (!pr.width && !again) { setTimeout(function () { camOn(scene, box, true); }, 160); return; }
+    demo.style.transition = 'none'; zone.style.transition = 'none';
+    demo.style.transform = 'none';
+    var z = zone.getBoundingClientRect(), v = vid.getBoundingClientRect(), d = demo.getBoundingClientRect();
+    demo.style.transition = ''; zone.style.transition = '';
+    var gap = 16, T = { l: z.left, t: z.top, r: z.right, b: z.bottom };
+    if (pr.width && pr.height) {
+      if (pr.width > z.width * 0.6) T.b = Math.max(T.t + 120, Math.min(T.b, pr.top - gap));
+      else if (pr.left > z.left + z.width * 0.3) T.r = Math.max(T.l + 200, Math.min(T.r, pr.left - gap));
+    }
+    var bw = box[2] / 100 * v.width, bh = box[3] / 100 * v.height;
+    var hx = v.left + box[0] / 100 * v.width + bw / 2, hy = v.top + box[1] / 100 * v.height + bh / 2;
+    var tw = T.r - T.l, th = T.b - T.t;
+    var smax = vid.videoWidth ? Math.min(3, 1.5 * vid.videoWidth / v.width) : 2;
+    var sc = Math.max(0.7, Math.min(0.88 * tw / bw, 0.8 * th / bh, smax));
+    var R = function (x) { return Math.round(x * 10) / 10; };
+    demo.style.transformOrigin = R(hx - d.left) + 'px ' + R(hy - d.top) + 'px';
+    zone.style.clipPath = 'inset(' + R(T.t - z.top) + 'px ' + R(z.right - T.r) + 'px ' + R(z.bottom - T.b) + 'px ' + R(T.l - z.left) + 'px round 10px)';
+    void demo.offsetWidth;
+    demo.style.transform = 'translate(' + R((T.l + T.r) / 2 - hx) + 'px,' + R((T.t + T.b) / 2 - hy) + 'px) scale(' + Math.round(sc * 1000) / 1000 + ')';
+  }
+  function camOff() {
+    q('[data-layer] .demo').forEach(function (e) { e.style.transform = ''; });
+    q('[data-layer] .zone').forEach(function (e) { e.style.clipPath = ''; });
+  }
+
   /* ---- AI-step pause panel ---- */
   function hlStyle(b) {
     return 'position: absolute; left: ' + b[0] + '%; top: ' + b[1] + '%; width: ' + b[2] + '%; height: ' + b[3] + '%; box-sizing: border-box; border: 3px solid #F5B335; border-radius: 6px; box-shadow: 0 0 0 9999px rgba(8,12,22,0.55); pointer-events: none';
   }
   function clearHl() { q('[data-hl]').forEach(function (e) { e.style.cssText = 'display: none'; }); }
-  function closePanel() { openCue = null; if (panel) panel.style.display = 'none'; clearHl(); }
+  function closePanel() { openCue = null; if (panel) panel.style.display = 'none'; clearHl(); camOff(); }
   function showPanel(scene, i) {
     var list = CUES[scene], c = list[i];
     openCue = { scene: scene, i: i };
     panel.querySelector('.ai-count').textContent = 'AI step ' + (i + 1) + ' of ' + list.length;
     panel.querySelector('.ai-title').textContent = c.title;
     panel.querySelector('.ai-what').textContent = c.what;
+    var flow = panel.querySelector('.ai-flow');
+    if (flow) {
+      flow.innerHTML = '';
+      (c.flow || []).forEach(function (t, k) {
+        var chip = document.createElement('span'); chip.className = 'ai-chip'; chip.textContent = t;
+        chip.style.cssText = k === c.hot ? 'background: #0F1B2D; color: #FFFFFF; border: 1px solid #0F1B2D; box-shadow: 0 0 0 2px #F5B335' : 'background: #EEF2F8; color: #1F2D40; border: 1px solid rgba(15,27,45,0.22)';
+        flow.appendChild(chip);
+      });
+      flow.style.cssText = (c.flow && c.flow.length) ? '' : 'display: none';
+    }
     var how = panel.querySelector('.ai-how'); how.innerHTML = '';
     c.how.forEach(function (t) {
       var d = document.createElement('div');
@@ -58,6 +102,7 @@
     clearHl();
     var hl = document.querySelector('[data-hl="' + scene + '"]'); if (hl) hl.style.cssText = hlStyle(c.box);
     panel.style.display = '';
+    setTimeout(function () { if (openCue && openCue.scene === scene && openCue.i === i) camOn(scene, c.box); }, 90);
     setTimeout(function () { var b = panel.querySelector('.ai-continue'); if (b && b.focus) { try { b.focus({ preventScroll: true }); } catch (e) { b.focus(); } } }, 80);
   }
   function playScene(n) {
@@ -128,8 +173,9 @@
     var first = null;
     for (var m = 0; m < FEATURED.length; m++) { var s = document.getElementById('ch' + FEATURED[m]); if (s && s.style.display !== 'none') { first = s; break; } }
     var start = document.querySelector('a[data-start]');
-    if (start) start.setAttribute('href', first ? '#' + first.id : '#ch12');
-    if (active !== 0) { var target = first || document.getElementById('ch12'); if (target) target.scrollIntoView({ block: 'start' }); }
+    var fallback = any ? '#more' : '#ch12';
+    if (start) start.setAttribute('href', first ? '#' + first.id : fallback);
+    if (active !== 0) { var target = first || document.querySelector(fallback); if (target) target.scrollIntoView({ block: 'start' }); }
     setTimeout(pick, 60);
   }
   q('button').forEach(function (b) {
@@ -139,6 +185,7 @@
   });
   window.addEventListener('scroll', onScroll, true);
   window.addEventListener('resize', onScroll);
+  window.addEventListener('resize', function () { if (openCue) camOn(openCue.scene, CUES[openCue.scene][openCue.i].box); });
   setInterval(pick, 500);
   setLayers(); setTimeout(pick, 300);
 })();
