@@ -2,6 +2,11 @@
 
 All notable changes to this repository are listed here. Format follows Keep a Changelog; versions follow Semantic Versioning.
 
+## [1.6.1] - 2026-10-26
+
+### Removed
+- The Resume section and its header and hero links, added in 1.6.0 by mistake. The resume stays off the site. Demo mode and the step buttons from 1.6.0 are unchanged.
+
 ## [1.6.0] - 2026-10-26
 
 ### Added

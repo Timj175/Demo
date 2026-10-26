@@ -16,7 +16,7 @@
   var seen = {}, lastT = {};
 
   function q(sel, root_) { return Array.prototype.slice.call((root_ || document).querySelectorAll(sel)); }
-  function sceneOf(a) { var h = a.getAttribute('href') || ''; if (h === '#more') return 13; if (h === '#resume') return 15; return Number(h.replace('#ch', '')); }
+  function sceneOf(a) { var h = a.getAttribute('href') || ''; if (h === '#more') return 13; return Number(h.replace('#ch', '')); }
   function narrow() { return !!(window.matchMedia && window.matchMedia('(max-width: 1000px)').matches); }
   function focusEl(el) { if (el && el.focus) { try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } } }
 
