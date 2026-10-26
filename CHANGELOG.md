@@ -2,6 +2,17 @@
 
 All notable changes to this repository are listed here. Format follows Keep a Changelog; versions follow Semantic Versioning.
 
+## [1.6.0] - 2026-10-26
+
+### Added
+- Demo mode on phones and tablets (1000px and narrower): tap the demo preview at the top, or press Open the demo on the card, and the demo comes to the front, full screen, restarts and runs the AI-step walk-through. Back to reading (or the browser Back button, or Escape) returns you to the same place on the page. A bottom bar has Pause / Play and a numbered chip for each AI step, so you can jump straight to any step.
+- The AI panel now has Previous and Next buttons and a numbered chip for every step, on all screen sizes. Jumping to a step moves the recording to that moment, and Continue carries on from there without repeating the step.
+- Resume section between Depth and More builds, with a Resume link in the header and the hero: Citi Cards roles from August 2018 back to July 2016, the technical portfolio, and the technical skills.
+
+### Changed
+- On phones and tablets the preview no longer pauses at AI steps while you read, because the panel covered the page and left only one step visible. The pauses now run in demo mode. Wide screens are unchanged.
+- The panel's Continue and Skip buttons sit side by side.
+
 ## [1.5.0] - 2026-10-25
 
 ### Changed
