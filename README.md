@@ -39,13 +39,13 @@ Then open http://localhost:8000.
 - Chapter tags: SympliLyfe, Atlas and the AI Admin Dashboard are AI-backed, Lucy is AI-ready but not AI-dependent, and everything else is Non-AI. The tag list and the featured order are the first lines of `site.js`.
 - Featured, in page order: SympliLyfe, AI Admin Dashboard, Atlas, Trackd and Folder Reader + Diff. The rest (Lucy, Markdown Viewer Enhanced, Trackd Mini, Forger, Document Editor, MS Assist, FileSearchPro) are cards under "More builds".
 - AI-step pauses: SympliLyfe 3, AI Admin Dashboard 3, Atlas 4. The panel docks to the right of the demo on wide screens, sits under it on mid-width screens and slides up from the bottom on phones. On phones and tablets the preview does not pause at all; the pauses run in demo mode, after a tap on the preview. The zoom is per step, not tied to scrolling. Atlas steps describe how the finished app works and say so on the panel. The clips are recordings on invented data, and each panel says whether a live model call is involved.
-- The photo slot in the hero stays empty until a photo is added, so the page shows no placeholder.
+- The portrait in the contact card at the top is `assets/tim-jones.jpg` (720 by 900, no embedded metadata).
 - Atlas is the v3.3.0 prototype. Language learning lives only in Atlas, not in SympliLyfe.
 - Trackd is shown as its own featured item. Five of its tools appear as cards under "More builds": Mini, Forger, Document Editor, MS Assist and FileSearchPro.
 
 ## Updating the page
 
-Edit text and links directly in `index.html` (search for the chapter title). Commit and push to `main`, and GitHub Pages redeploys within a minute or two. See [CHANGELOG.md](CHANGELOG.md) for what changed in each version.
+Edit text and links directly in `index.html` (search for the chapter title). Commit and push to `main`, and GitHub Pages redeploys within a minute or two.
 
 ## License
 
